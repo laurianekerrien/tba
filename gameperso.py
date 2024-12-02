@@ -30,32 +30,40 @@ class Game:
         
         # Setup rooms
 
-        forest = Room("Forest", "dans une forêt enchantée. Vous entendez une brise légère à travers la cime des arbres.")
-        self.rooms.append(forest)
-        tower = Room("Tower", "dans une immense tour en pierre qui s'élève au dessus des nuages.")
-        self.rooms.append(tower)
-        cave = Room("Cave", "dans une grotte profonde et sombre. Des voix semblent provenir des profondeurs.")
-        self.rooms.append(cave)
-        cottage = Room("Cottage", "dans un petit chalet pittoresque avec un toit de chaume. Une épaisse fumée verte sort de la cheminée.")
-        self.rooms.append(cottage)
-        swamp = Room("Swamp", "dans un marécage sombre et ténébreux. L'eau bouillonne, les abords sont vaseux.")
-        self.rooms.append(swamp)
-        castle = Room("Castle", "dans un énorme château fort avec des douves et un pont levis. Sur les tours, des flèches en or massif.")
-        self.rooms.append(castle)
+        cuisine = Room("cuisine", "vous etes dans la cuisine choisissez une arme, et une personne")
+        self.rooms.append(cuisine)
+        hall = Room("hall", "vous etes dans le hall choisissez une arme, et une personne.")
+        self.rooms.append(hall)
+        salon = Room("salon", "vous etes dans le salon choisissez une arme, et une personne.")
+        self.rooms.append(salon)
+        bureau = Room("bureau", "vous etes dans le bureau choisissez une arme, et une personne")
+        self.rooms.append(bureau)
+        grand_salon = Room("grand_salon", "vous etes dans le grand salon choisissez une arme, et une personne")
+        self.rooms.append(grand_salon)
+        bibliothèque = Room("bibliothèque", "vous etes dans la bibliothèque choisissez une arme, et une personne")
+        self.rooms.append(bibliothèque)
+        salle_à_manger = Room("salle_à_manger","vous etes dans la salle à manger choisissez une arme, et une personne")
+        self.rooms.append(salle_à_manger)
+        salle_de_billard = Room("salle_de_billard", "vous etes dans la salle de billard choisissez une arme, et une personne")
+        self.rooms.append(salle_de_billard)
+        véranda = Room("véranda", "vous etes dans la véranda choisissez une arme, et une personne")
+        self.rooms.append(véranda)
 
         # Create exits for rooms
 
-        forest.exits = {"N" : cave, "E" : None, "S" : castle, "O" : None}  ## j'ai enlevé le passage vers la tour de pierre
-        tower.exits = {"N" : cottage, "E" : None, "S" : None, "O" : None}  ## j'ai enlevé le passage vers la tour de pierre et vers le marécage
-        cave.exits = {"N" : None, "E" : cottage, "S" : forest, "O" : None}
-        cottage.exits = {"N" : None, "E" : None, "S" : tower, "O" : cave}
-        swamp.exits = {"N" : tower, "E" : None, "S" : None, "O" : castle}  ## j'ai laissé le passage vers la tour de pierre
-        castle.exits = {"N" : forest, "E" : swamp, "S" : None, "O" : None}
-
+        cuisine.exits = {"N" : None, "E" : grand_salon, "S" : salle_à_manger, "O" : None, "passage_secret" : bureau}  
+        hall.exits = {"N" : None, "E" : bureau, "S" : None, "O" : salon , "passage_secret" : None}  
+        salon.exits = {"N" : salle_à_manger, "E" : hall, "S" : None, "O" : None , "passage_secret" : véranda}
+        bureau.exits = {"N" : bibliothèque, "E" : None, "S" : None, "O" : hall, "passage_secret" : cuisine}
+        grand_salon.exits = {"N" : None, "E" : véranda, "S" : None, "O" : cuisine, "passage_secret" : None}  
+        bibliothèque.exits = {"N" : salle_de_billard, "E" : None, "S" : bureau, "O" : None, "passage_secret" : None}
+        salle_à_manger.exits = {"N" : cuisine, "E" : None, "S" : salon, "O" : None, "passage_secret" : None}
+        salle_de_billard.exits = {"N" : véranda, "E" : None, "S" : bibliothèque, "O" : None, "passage_secret" : None}
+        véranda.exits = {"N" : None, "E" : None, "S" : salle_de_billard, "O" : grand_salon, "passage_secret" : salon}
         # Setup player and starting room
 
         self.player = Player(input("\nEntrez votre nom: "))
-        self.player.current_room = swamp
+        self.player.current_room = salle_à_manger
 
     # Play the game
     def play(self):
