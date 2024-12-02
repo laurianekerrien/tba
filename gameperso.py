@@ -29,6 +29,8 @@ class Game:
         self.commands["go"] = go
         rester = Command("rester", " vous avez choisi de rester dans cette pièce", Actions.rester, 0)
         self.commands["rester"] = rester
+        history = Command("history", " : consulter l'historique des pièces visitées", Actions.history, 0)
+        self.commands["history"] = history
         
         # Setup rooms
 
@@ -101,6 +103,7 @@ class Game:
         print(f"\nBienvenue {self.player.name} dans cette partie de Cluedo déplacez vous sur la map et faites vos hypothèses pour résoudre le crime !")
         print("Entrez 'help' si vous avez besoin d'aide.")
         print(self.player.current_room.get_long_description())
+        self.player.get_history()  # Ajout de la pièce initiale à l'historique
     
 
 def main():

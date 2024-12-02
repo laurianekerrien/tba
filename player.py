@@ -1,11 +1,21 @@
 # Define the Player class.
+
 class Player():
 
     # Define the constructor.
     def __init__(self, name):
         self.name = name
         self.current_room = None
-    
+        self.history=[]
+    def stay(self):
+        print(self.current_room.get_long_description())
+    # Define the historique method.
+    def get_history(self):
+        """Ajoute la pièce actuelle à l'historique et l'affiche."""
+        self.history.append(self.current_room)
+        print("Historique des pièces visitées :")
+        for room in self.history:
+            print(f" - {room.name}")
     # Define the move method.
     def move(self, direction):
         # Get the next room from the exits dictionary of the current room.
@@ -59,8 +69,9 @@ class Player():
             return False
         
         # Set the current room to the next room.
+        
         self.current_room = next_room
+        self.get_history()
         print(self.current_room.get_long_description())
         return True
-
     

@@ -17,6 +17,36 @@ MSG0 = "\nLa commande '{command_word}' ne prend pas de paramètre.\n"
 MSG1 = "\nLa commande '{command_word}' prend 1 seul paramètre.\n"
 
 class Actions:
+
+    def history(game, list_of_words, number_of_parameters):
+        """
+        Affiche l'historique des pièces visitées par le joueur.
+
+        Args:
+            game (Game): L'objet du jeu.
+            list_of_words (list): La liste des mots dans la commande.
+            number_of_parameters (int): Le nombre de paramètres attendus.
+
+        Returns:
+            bool: True si la commande a été exécutée avec succès, False sinon.
+        """
+        l = len(list_of_words)
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG0.format(command_word=command_word))
+            return False
+        
+        # Affiche l'historique du joueur.
+        player = game.player
+        print("\nHistorique des pièces visitées :")
+        if player.history:
+            for room in player.history:
+                print(f" - {room.name}")
+        else:
+            print("Aucune pièce visitée.")
+        print()
+        return True
+
     def rester(game, list_of_words, number_of_parameters):
         """
         vous rester dans la même pièce pour effectuer une autre hypothèse
@@ -32,10 +62,9 @@ class Actions:
         
         # Print the list of available commands.
         print("\nVous rester dans la même pièce pour effectuer une autre hypothèse")
-
-        direction = list_of_words[0]
-        # Move the player in the direction specified by the parameter.
-        player.move(direction)
+        print()
+        
+        player.stay()
         return True
 
     def go(game, list_of_words, number_of_parameters):
