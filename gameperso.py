@@ -25,8 +25,10 @@ class Game:
         self.commands["help"] = help
         quit = Command("quit", " : quitter le jeu", Actions.quit, 0)
         self.commands["quit"] = quit
-        go = Command("go", " <direction> : se déplacer dans une direction cardinale (N, E, S, O)", Actions.go, 1)
+        go = Command("go", " <direction> : se déplacer dans une direction cardinale (N, E, S, O, passage sercret et rester )", Actions.go, 1)
         self.commands["go"] = go
+        rester = Command("rester", " vous avez choisi de rester dans cette pièce", Actions.rester, 0)
+        self.commands["rester"] = rester
         
         # Setup rooms
 
@@ -51,7 +53,7 @@ class Game:
 
         # Create exits for rooms
 
-        cuisine.exits = {"N" : None, "E" : grand_salon, "S" : salle_à_manger, "O" : None, "passage_secret" : bureau}  
+        cuisine.exits = {"N" : None, "E" : grand_salon, "S" : salle_à_manger, "O" : None, "passage_secret" : bureau }  
         hall.exits = {"N" : None, "E" : bureau, "S" : None, "O" : salon , "passage_secret" : None} 
         salon.exits = {"N" : salle_à_manger, "E" : hall, "S" : None, "O" : None , "passage_secret" : véranda}
         bureau.exits = {"N" : bibliothèque, "E" : None, "S" : None, "O" : hall, "passage_secret" : cuisine}
@@ -98,7 +100,6 @@ class Game:
     def print_welcome(self):
         print(f"\nBienvenue {self.player.name} dans cette partie de Cluedo déplacez vous sur la map et faites vos hypothèses pour résoudre le crime !")
         print("Entrez 'help' si vous avez besoin d'aide.")
-        #
         print(self.player.current_room.get_long_description())
     
 

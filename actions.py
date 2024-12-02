@@ -17,6 +17,26 @@ MSG0 = "\nLa commande '{command_word}' ne prend pas de paramètre.\n"
 MSG1 = "\nLa commande '{command_word}' prend 1 seul paramètre.\n"
 
 class Actions:
+    def rester(game, list_of_words, number_of_parameters):
+        """
+        vous rester dans la même pièce pour effectuer une autre hypothèse
+
+        """
+        player = game.player
+        l = len(list_of_words)
+        # If the number of parameters is incorrect, print an error message and return False.
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG1.format(command_word=command_word))
+            return False
+        
+        # Print the list of available commands.
+        print("\nVous rester dans la même pièce pour effectuer une autre hypothèse")
+
+        direction = list_of_words[0]
+        # Move the player in the direction specified by the parameter.
+        player.move(direction)
+        return True
 
     def go(game, list_of_words, number_of_parameters):
         """
