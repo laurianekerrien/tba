@@ -113,3 +113,140 @@ def main():
 
 if __name__ == "__main__":
     main()
+import random
+
+class Item:
+    def __init__(self, name, description):
+        self.name = name
+        self.description = description
+
+    def __str__(self):
+        return f"{self.name}: {self.description}"
+
+class Room:
+    def __init__(self, name, description, items=None):
+        self.name = name
+        self.description = description
+        self.items = items if items else []
+
+    def __str__(self):
+        return f"{self.name}: {self.description}"
+
+class Player:
+    def __init__(self, name):
+        self.name = name
+        self.inventory = []
+        self.current_room = None
+
+    def check_inventory(self):
+        if self.inventory:
+            print(f"Inventaire de {self.name}:")
+            for item in self.inventory:
+                print(f"- {item}")
+        else:
+            print(f"Inventaire de {self.name} est vide.")
+
+    def look(self):
+        """Affiche la description de la pièce et les items présents."""
+        if self.current_room:
+            print(f"Vous êtes dans {self.current_room.name}: {self.current_room.description}")
+            if self.current_room.items:
+                print("Items présents dans cette pièce:")
+                for item in self.current_room.items:
+                    print(f"- {item}")
+            else:
+                print("Il n'y a aucun item dans cette pièce.")
+        else:
+            print("Vous n'êtes dans aucune pièce.")
+
+    def take(self, item_name):
+        """Prend un item de la pièce actuelle et le met dans l'inventaire."""
+        if self.current_room:
+            for item in self.current_room.items:
+                if item.name.lower() == item_name.lower():
+                    self.inventory.append(item)
+                    self.current_room.items.remove(item)
+                    print(f"Vous avez pris : {item}")
+                    return
+            print(f"L'item '{item_name}' n'est pas dans cette pièce.")
+        else:
+            print("Vous n'êtes dans aucune pièce pour prendre des items.")
+
+    def drop(self, item_name):
+        """Repose un item de l'inventaire dans la pièce actuelle."""
+        for item in self.inventory:
+            if item.name.lower() == item_name.lower():
+                self.inventory.remove(item)
+                self.current_room.items.append(item)
+                print(f"Vous avez reposé : {item}")
+                return
+        print(f"L'item '{item_name}' n'est pas dans votre inventaire.")
+
+# Création des items
+items = [
+    Item("ustensiles de cuisine", "Divers ustensiles pour cuisiner."),
+    Item("four", "Un four pour cuire des aliments."),
+    Item("mixeur", "Un appareil pour mélanger des ingrédients."),
+    Item("tableaux de chats", "Deux tableaux représentant des chats."),
+    Item("bougie", "Une bougie allumée sur une table."),
+    Item("télévision", "Une grande télévision."),
+    Item("grand canapé", "Un canapé confortable avec des coussins."),
+    Item("livres", "Des livres rangés dans une grande bibliothèque."),
+    Item("lampe", "Une lampe de bureau."),
+    Item("canapés", "Deux canapés dans le grand salon."),
+    Item("table de jeux", "Une table pour jouer à divers jeux."),
+    Item("manuscrits", "Des manuscrits anciens dans la bibliothèque."),
+    Item("grande table", "Une table pour manger."),
+    Item("chaises", "Des chaises autour de la table."),
+    Item("table de billard", "Une table pour jouer au billard."),
+    Item("boules de billard", "Des boules pour le billard."),
+    Item("petit jardin", "Un petit jardin décoratif."),
+    Item("table", "Une table dans la véranda.")
+]
+
+# Création des pièces
+rooms = {
+    "cuisine": Room("Cuisine", "Une cuisine avec des ustensiles et un mixeur.", items[:3]),
+    "hall": Room("Hall", "Un hall avec des tableaux de chats et une bougie.", items[3:5]),
+    "salon": Room("Salon", "Un salon avec une télévision et un canapé.", items[5:7]),
+    "bureau": Room("Bureau", "Un bureau avec des livres et une lampe.", items[7:9]),
+    "grand_salon": Room("Grand Salon", "Un grand salon avec des canapés et une table de jeux.", items[9:11]),
+    "bibliothèque": Room("Bibliothèque", "Une bibliothèque avec des manuscrits anciens.", [items[11]]),
+    "salle_à_manger": Room("Salle à Manger", "Une grande salle à manger avec une table et des chaises.", items[12:14]),
+    "salle_de_billard": Room("Salle de Billard", "Une salle de billard avec une table de billard.", items[14:16]),
+    "veranda": Room("Véranda", "Une véranda avec un petit jardin et une table.", items[16:])
+}
+
+# Création du joueur
+player = Player(input("Entrez le nom du joueur : "))
+player.current_room = rooms["cuisine"]  # Le joueur commence dans la cuisine
+
+# Boucle de jeu
+while True:
+    command = input("> ").strip().lower()
+    if command.startswith("go "):
+        room_name = command[3:]
+        if room_name in rooms:
+            player.current_room = rooms[room_name]
+            print(f"Vous êtes maintenant dans {room_name}.")
+        else:
+            print(f"La pièce '{room_name}' n'existe pas.")
+    elif command == "look":
+        player.look()
+    elif command.startswith("look "):
+        print("La commande 'look' ne prend pas de paramètre.")
+    elif command == "check":
+        player.check_inventory()
+    elif command.startswith("check "):
+        print("La commande 'check' ne prend pas de paramètre.")
+    elif command.startswith("take "):
+        item_name = command[5:]
+        player.take(item_name)
+    elif command.startswith("drop "):
+        item_name = command[5:]
+        player.drop(item_name)
+    elif command == "quit":
+        print("Merci d'avoir joué !")
+        break
+    else:
+        print("Commande inconnue.")
