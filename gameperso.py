@@ -86,6 +86,7 @@ class Game:
 
         # Loop until the game is finished
         while not self.finished:
+            self.show_turn_summary()
             command = input("> ").strip().lower()
             if command.startswith("hypothese"):
                 self.make_hypothesis(command)
@@ -148,6 +149,30 @@ class Game:
         self.player.get_history()  # Ajout de la pièce initiale à l'historique
         print("Formulez une hypothèses avec : hypothese <arme> <personnage>")
     
+    def show_turn_summary(self):
+        """Affiche les informations importantes pour le joueur à chaque tour."""
+        current_room = self.player.current_room
+
+        # Afficher les sorties possibles
+        print("\nVous êtes dans :", current_room.name)
+        print("Description :", current_room.description)
+        print("Sorties possibles :")
+        for direction, room in current_room.exits.items():
+            if room:
+                print(f"- {direction.upper()} : {room.name}")
+
+        # Afficher l'historique des pièces visitées
+        print("\nHistorique des pièces visitées :")
+        for idx, room in enumerate(self.player.history, start=1):
+            print(f"{idx}. {room.name}")
+
+        # Proposer une hypothèse aléatoire
+        random_weapon = random.choice(self.weapons)
+        random_character = random.choice(self.characters)
+        print("\nSuggestion d'hypothèse :")
+        print(f"Hypothèse possible : hypothese {random_weapon} {random_character}")
+        print("\nEntrez votre commande (par exemple : 'go <direction>', 'hypothese <arme> <personnage>', 'help', etc.)")
+
 
 def main():
     # Create a game object and play the game
@@ -165,6 +190,9 @@ class Item:
 
     def __str__(self):
         return f"{self.name}: {self.description}"
+    
+
+
 
 class Room:
     def __init__(self, name, description, items=None):
