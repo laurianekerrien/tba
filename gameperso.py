@@ -6,6 +6,7 @@ from room import Room
 from player import Player
 from command import Command
 from actions import Actions
+import random
 
 class Game:
 
@@ -15,6 +16,9 @@ class Game:
         self.rooms = []
         self.commands = {}
         self.player = None
+        self.weapons = ["Couteau", "Revolver", "Chandelier", "Poison", "Corde"]
+        self.characters = ["Professeur_Violet", "Colonel_Moutarde", "Mademoiselle_Rose", "Madame_Leblanc", "Docteur_Olive"]
+        self.secret_solution = {}
     
     # Setup the game
     def setup(self):
@@ -69,16 +73,54 @@ class Game:
         self.player = Player(input("\nEntrez votre nom: "))
         self.player.current_room = salle_à_manger
 
+        self.secret_solution = {
+            "weapon": random.choice(self.weapons),
+            "character": random.choice(self.characters),
+            "room": random.choice([room.name for room in self.rooms])
+        }
+
     # Play the game
     def play(self):
         self.setup()
         self.print_welcome()
+
         # Loop until the game is finished
         while not self.finished:
-            # Get the command from the player
-            self.process_command(input("> "))
-        return None
+            command = input("> ").strip().lower()
+            if command.startswith("hypothese"):
+                self.make_hypothesis(command)
+            else:
+                self.process_command(command)
 
+    def make_hypothesis(self, command):
+        try:
+            # Extraire l'arme et le personnage de la commande
+            _, weapon, character = command.split(" ", 2)
+        except ValueError:
+            print("Format de l'hypothèse incorrect. Utilisez : hypothese <arme> <personnage>")
+            return
+    
+        # La pièce est celle où se trouve le joueur
+        current_room = self.player.current_room.name
+    
+        # Vérification de l'hypothèse
+        incorrect_elements = []
+        if weapon.lower() != self.secret_solution["weapon"].lower():
+            incorrect_elements.append(f"L'arme {weapon} est incorrecte.")
+        if character.lower() != self.secret_solution["character"].lower():
+            incorrect_elements.append(f"Le personnage {character} est incorrect.")
+        if current_room.lower() != self.secret_solution["room"].lower():
+            incorrect_elements.append(f"La pièce {current_room} est incorrecte.")
+    
+        # Résultat de l'hypothèse
+        if not incorrect_elements:
+            print("Bravo ! Vous avez résolu le mystère !")
+            self.finished = True
+        else:
+            # Afficher une erreur aléatoire parmi les éléments incorrects
+            wrong_hint = random.choice(incorrect_elements)
+            print(f"Hypothèse incorrecte : {wrong_hint}")
+        
     # Process the command entered by the player
     def process_command(self, command_string) -> None:
         if command_string == '':   #si on a une commande vide on ne répond rien
@@ -104,6 +146,7 @@ class Game:
         print("Entrez 'help' si vous avez besoin d'aide.")
         print(self.player.current_room.get_long_description())
         self.player.get_history()  # Ajout de la pièce initiale à l'historique
+        print("Formulez des hypothèses avec : hypothese <arme> <personnage>")
     
 
 def main():
@@ -250,3 +293,4 @@ while True:
         break
     else:
         print("Commande inconnue.")
+
