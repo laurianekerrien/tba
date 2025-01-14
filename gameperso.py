@@ -16,8 +16,8 @@ class Game:
         self.rooms = []
         self.commands = {}
         self.player = None
-        self.weapons = ["Couteau", "Revolver", "Chandelier", "Poison", "Corde"]
-        self.characters = ["Professeur_Violet", "Colonel_Moutarde", "Mademoiselle_Rose", "Madame_Leblanc", "Docteur_Olive"]
+        self.weapons = ["Poignard", "Revolver", "Chandelier", "Poison", "Corde", "Clé_anglaise",]
+        self.characters = ["Professeur_Violet", "Colonel_Moutarde", "Mademoiselle_Rose", "Madame_Leblanc", "Docteur_Olive", "Madame_Pervenche"]
         self.secret_solution = {}
     
     # Setup the game
@@ -99,10 +99,10 @@ class Game:
         except ValueError:
             print("Format de l'hypothèse incorrect. Utilisez : hypothese <arme> <personnage>")
             return
-    
+
         # La pièce est celle où se trouve le joueur
         current_room = self.player.current_room.name
-    
+
         # Vérification de l'hypothèse
         incorrect_elements = []
         if weapon.lower() != self.secret_solution["weapon"].lower():
@@ -111,16 +111,16 @@ class Game:
             incorrect_elements.append(f"Le personnage {character} est incorrect.")
         if current_room.lower() != self.secret_solution["room"].lower():
             incorrect_elements.append(f"La pièce {current_room} est incorrecte.")
-    
+
         # Résultat de l'hypothèse
         if not incorrect_elements:
-            print("Bravo ! Vous avez résolu le mystère !")
+            print("Bravo ! Vous avez résolu le meurtre !")
             self.finished = True
         else:
             # Afficher une erreur aléatoire parmi les éléments incorrects
             wrong_hint = random.choice(incorrect_elements)
             print(f"Hypothèse incorrecte : {wrong_hint}")
-        
+
     # Process the command entered by the player
     def process_command(self, command_string) -> None:
         if command_string == '':   #si on a une commande vide on ne répond rien
@@ -142,11 +142,11 @@ class Game:
 
     # Print the welcome message
     def print_welcome(self):
-        print(f"\nBienvenue {self.player.name} dans cette partie de Cluedo déplacez vous sur la map et faites vos hypothèses pour résoudre le crime !")
+        print(f"\nBienvenue {self.player.name} dans cette partie de Cluedo notre cher Docteur Lenoir a été sauvagement assassiné. Déplacez vous sur la map et faites vos hypothèses pour résoudre le crime !")
         print("Entrez 'help' si vous avez besoin d'aide.")
         print(self.player.current_room.get_long_description())
         self.player.get_history()  # Ajout de la pièce initiale à l'historique
-        print("Formulez des hypothèses avec : hypothese <arme> <personnage>")
+        print("Formulez une hypothèses avec : hypothese <arme> <personnage>")
     
 
 def main():
