@@ -255,37 +255,25 @@ class Player:
 
 # Création des items
 items = [
-    Item("ustensiles de cuisine", "Divers ustensiles pour cuisiner."),
-    Item("four", "Un four pour cuire des aliments."),
-    Item("mixeur", "Un appareil pour mélanger des ingrédients."),
-    Item("tableaux de chats", "Deux tableaux représentant des chats."),
-    Item("bougie", "Une bougie allumée sur une table."),
-    Item("télévision", "Une grande télévision."),
-    Item("grand canapé", "Un canapé confortable avec des coussins."),
-    Item("livres", "Des livres rangés dans une grande bibliothèque."),
-    Item("lampe", "Une lampe de bureau."),
-    Item("canapés", "Deux canapés dans le grand salon."),
-    Item("table de jeux", "Une table pour jouer à divers jeux."),
-    Item("manuscrits", "Des manuscrits anciens dans la bibliothèque."),
-    Item("grande table", "Une table pour manger."),
-    Item("chaises", "Des chaises autour de la table."),
-    Item("table de billard", "Une table pour jouer au billard."),
-    Item("boules de billard", "Des boules pour le billard."),
-    Item("petit jardin", "Un petit jardin décoratif."),
-    Item("table", "Une table dans la véranda.")
-]
+    Item("Poignard", "Une arme courte et tranchante."),
+    Item("Revolver", "Une arme à feu portative."),
+    Item("Chandelier", "Un chandelier pouvant servir comme arme."),
+    Item("Poison", "Une fiole contenant une substance toxique."),
+    Item("Corde", "Une corde robuste."),
+    Item("Clé_anglaise", "Une clé anglaise lourde et solide.")
+    ]
 
 # Création des pièces
 rooms = {
-    "cuisine": Room("Cuisine", "Une cuisine avec des ustensiles et un mixeur.", items[:3]),
-    "hall": Room("Hall", "Un hall avec des tableaux de chats et une bougie.", items[3:5]),
-    "salon": Room("Salon", "Un salon avec une télévision et un canapé.", items[5:7]),
-    "bureau": Room("Bureau", "Un bureau avec des livres et une lampe.", items[7:9]),
-    "grand_salon": Room("Grand Salon", "Un grand salon avec des canapés et une table de jeux.", items[9:11]),
-    "bibliothèque": Room("Bibliothèque", "Une bibliothèque avec des manuscrits anciens.", [items[11]]),
-    "salle_à_manger": Room("Salle à Manger", "Une grande salle à manger avec une table et des chaises.", items[12:14]),
-    "salle_de_billard": Room("Salle de Billard", "Une salle de billard avec une table de billard.", items[14:16]),
-    "veranda": Room("Véranda", "Une véranda avec un petit jardin et une table.", items[16:])
+    "cuisine": Room("Cuisine", "Une cuisine avec des ustensiles et un peut être un objet mystère.", items[4]),
+    "hall": Room("Hall", "Un hall avec des tableaux de chats, une bougie et un peut être un objet mystère.", items[2]),
+    "salon": Room("Salon", "Un salon avec une télévision et un canapé."),
+    "bureau": Room("Bureau", "Un bureau avec des livres et une lampe."),
+    "grand_salon": Room("Grand Salon", "Un grand salon avec des canapés et une table de jeux et un peut être un objet mystère.", items[3]),
+    "bibliothèque": Room("Bibliothèque", "Une bibliothèque avec des manuscrits anciens et un peut être un objet mystère.", items[1]),
+    "salle_à_manger": Room("Salle à Manger", "Une grande salle à manger avec une table et un peut être un objet mystère.", items[0]),
+    "salle_de_billard": Room("Salle de Billard", "Une salle de billard avec une table de billard."),
+    "veranda": Room("Véranda", "Une véranda avec un petit jardin et et un peut être un objet mystère.", items[5])
 }
 
 # Création du joueur
