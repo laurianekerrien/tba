@@ -6,6 +6,8 @@ from room import Room
 from player import Player
 from command import Command
 from actions import Actions
+from charactere import GameMaster
+from item import Item
 import random
 
 class Game:
@@ -16,12 +18,24 @@ class Game:
         self.rooms = []
         self.commands = {}
         self.player = None
-        self.weapons = ["Poignard", "Revolver", "Chandelier", "Poison", "Corde", "Clé_anglaise",]
-        self.characters = ["Professeur_Violet", "Colonel_Moutarde", "Mademoiselle_Rose", "Madame_Leblanc", "Docteur_Olive", "Madame_Pervenche"]
         self.secret_solution = {}
-    
+        self.game_master = None
+        
     # Setup the game
     def setup(self):
+        """Configure les éléments du jeu."""
+        print("\n**************************************************")
+        print("            BIENVENUE DANS LE JEU CLUEDO          ")
+        print("**************************************************")
+
+        # Présentation de l'histoire par le maître du jeu
+        print("\n*** LE MAÎTRE DU JEU PREND LA PAROLE ***")
+        print("Monsieur Taupe :")
+        print("Bienvenue dans ce manoir mystérieux. Un crime abominable vient d'être commis.")
+        print("Le célèbre Docteur Lenoir a été retrouvé sans vie dans des circonstances tragiques.")
+        print("Votre mission est de résoudre ce mystère en découvrant l'arme, le coupable et la pièce où le crime a eu lieu.")
+        print("Mais attention, les apparences peuvent être trompeuses, et je ne vous donnerai que des hypothèses fausses !")
+        print("Bonne chance, détective.\n")
 
         # Setup commands
 
@@ -35,6 +49,12 @@ class Game:
         self.commands["rester"] = rester
         history = Command("history", " : consulter l'historique des pièces visitées", Actions.history, 0)
         self.commands["history"] = history
+        look = Command("look", " : consulter ce qu'il y a dans la piece", Actions.look, 0)
+        self.commands["look"] = look
+        drop = Command("drop", " : permet de remettre dans la piece l'objet ", Actions.drop, 0)
+        self.commands["drop"] = drop
+        take = Command("take", " : permet de prendre l'objet dans la piece", Actions.take, 0)
+        self.commands["take"] = take
         
         # Setup rooms
 
@@ -72,12 +92,16 @@ class Game:
 
         self.player = Player(input("\nEntrez votre nom: "))
         self.player.current_room = salle_à_manger
-
+        self.game_master = GameMaster("Monsieur Taupe", random.choice(self.rooms))
+        self.game_master.talk()
         self.secret_solution = {
-            "weapon": random.choice(self.weapons),
-            "character": random.choice(self.characters),
+            "weapon": random.choice(self.game_master.weapons),
+            "character": random.choice(self.game_master.characteres),
             "room": random.choice([room.name for room in self.rooms])
         }
+        print(f"\n{self.game_master.name} : {self.game_master.get_msg()}")
+        print(f"{self.game_master.name} : {self.game_master.get_msg()}")
+        print(f"{self.game_master.name} : {self.game_master.get_msg()}")
 
     # Play the game
     def play(self):
@@ -167,8 +191,8 @@ class Game:
             print(f"{idx}. {room.name}")
 
         # Proposer une hypothèse aléatoire
-        random_weapon = random.choice(self.weapons)
-        random_character = random.choice(self.characters)
+        random_weapon = random.choice(self.game_master.weapons)
+        random_character = random.choice(self.game_master.characteres)
         print("\nSuggestion d'hypothèse :")
         print(f"Hypothèse possible : hypothese {random_weapon} {random_character}")
         print("\nEntrez votre commande (par exemple : 'go <direction>', 'hypothese <arme> <personnage>', 'help', etc.)")
@@ -209,49 +233,7 @@ class Player:
         self.inventory = []
         self.current_room = None
 
-    def check_inventory(self):
-        if self.inventory:
-            print(f"Inventaire de {self.name}:")
-            for item in self.inventory:
-                print(f"- {item}")
-        else:
-            print(f"Inventaire de {self.name} est vide.")
 
-    def look(self):
-        """Affiche la description de la pièce et les items présents."""
-        if self.current_room:
-            print(f"Vous êtes dans {self.current_room.name}: {self.current_room.description}")
-            if self.current_room.items:
-                print("Items présents dans cette pièce:")
-                for item in self.current_room.items:
-                    print(f"- {item}")
-            else:
-                print("Il n'y a aucun item dans cette pièce.")
-        else:
-            print("Vous n'êtes dans aucune pièce.")
-
-    def take(self, item_name):
-        """Prend un item de la pièce actuelle et le met dans l'inventaire."""
-        if self.current_room:
-            for item in self.current_room.items:
-                if item.name.lower() == item_name.lower():
-                    self.inventory.append(item)
-                    self.current_room.items.remove(item)
-                    print(f"Vous avez pris : {item}")
-                    return
-            print(f"L'item '{item_name}' n'est pas dans cette pièce.")
-        else:
-            print("Vous n'êtes dans aucune pièce pour prendre des items.")
-
-    def drop(self, item_name):
-        """Repose un item de l'inventaire dans la pièce actuelle."""
-        for item in self.inventory:
-            if item.name.lower() == item_name.lower():
-                self.inventory.remove(item)
-                self.current_room.items.append(item)
-                print(f"Vous avez reposé : {item}")
-                return
-        print(f"L'item '{item_name}' n'est pas dans votre inventaire.")
 
 # Création des items
 items = [
@@ -304,9 +286,13 @@ while True:
     elif command.startswith("drop "):
         item_name = command[5:]
         player.drop(item_name)
+    elif command == "talk":
+                game_master.talk()
     elif command == "quit":
         print("Merci d'avoir joué !")
         break
     else:
-        print("Commande inconnue.")
+        print("Commande non reconnue. Essayez 'go', 'look', 'take', 'drop', 'check', 'cards', 'talk', 'hypothesis', ou 'quit'.")
 
+if __name__ == "__main__":
+    Game().play()

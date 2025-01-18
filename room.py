@@ -1,10 +1,12 @@
 # Define the Room class.
+import random
 
 class Room:
     # Define the constructor. 
-    def __init__(self, name, description):
+    def __init__(self, name, description, items=None):
         self.name = name
         self.description = description
+        self.items = items if items else []
         self.exits = {}
     
     # Define the get_exit method.
@@ -19,11 +21,10 @@ class Room:
     # Return a string describing the room's exits.
     def get_exit_string(self):
         exit_string = "Rester dans la même pièce ou sorties possibles: " 
-        for exit in self.exits.keys():
-            if self.exits.get(exit) is not None:
-                exit_string += exit + ", "
-        exit_string = exit_string.strip(", ")
-        return exit_string
+        for direction, room in self.exits.items():
+            if room:
+                exit_string += f"{direction}, "
+        return exit_string.strip(', ')
 
     # Return a long description of this room including exits.
     def get_long_description(self):

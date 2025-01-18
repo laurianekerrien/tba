@@ -1,5 +1,9 @@
 # Description: The actions module.
-
+from room import Room
+from player import Player
+from command import Command
+from charactere import GameMaster
+import random
 # The actions module contains the functions that are called when a command is executed.
 # Each function takes 3 parameters:
 # - game: the game object
@@ -61,7 +65,7 @@ class Actions:
             return False
         
         # Print the list of available commands.
-        print("\nVous rester dans la même pièce pour effectuer une autre hypothèse")
+        print("\nVous restez dans la même pièce pour effectuer une autre hypothèse")
         print()
         
         player.stay()
@@ -107,6 +111,74 @@ class Actions:
         # Move the player in the direction specified by the parameter.
         player.move(direction)
         return True
+    
+
+    def look(game, list_of_words, number_of_parameters):
+        l = len(list_of_words)
+        # Vérifiez le nombre de paramètres.
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG0.format(command_word=command_word))
+            return False
+
+        current_room = game.player.current_room
+        print(f"Vous êtes dans : {current_room.name}")
+        print(current_room.description)
+
+        if current_room.items:
+            print("Objets dans la pièce :")
+            for item in current_room.items:
+                print(f"- {item.name}")
+        else:
+            print("Il n'y a pas d'objets dans cette pièce.")
+    
+    
+    def take(game, list_of_words, number_of_parameters):
+        l = len(list_of_words)
+        # Vérifiez le nombre de paramètres.
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG0.format(command_word=command_word))
+            return False
+
+        # Obtenez l'objet mentionné.
+        item_to_take = list_of_words[1]
+        player = game.player
+        current_room = player.room
+
+        # Vérifiez si l'objet est dans la pièce.
+        if item_to_take in current_room.items:
+            current_room.items.remove(item_to_take)
+            player.inventory.append(item_to_take)
+            print(f"Vous avez pris {item_to_take}.")
+            return True
+        else:
+            print(f"{item_to_take} n'est pas ici.")
+            return False
+        
+
+    def drop(game, list_of_words, number_of_parameters):
+        l = len(list_of_words)
+        if l != number_of_parameters + 1:
+            command_word = list_of_words[0]
+            print(MSG1.format(command_word=command_word))
+            return False
+        # Obtenez l'objet mentionné.
+        item_to_drop = list_of_words[1]
+
+        # Obtenez le joueur et la pièce actuelle.
+        player = game.player
+        current_room = player.room
+
+        # Vérifiez si l'objet est dans l'inventaire du joueur.
+        if item_to_drop in player.inventory:
+            player.inventory.remove(item_to_drop)
+            current_room.items.append(item_to_drop)
+            print(f"Vous avez déposé {item_to_drop}.")
+            return True
+        else:
+            print(f"Vous ne possédez pas {item_to_drop}.")
+            return False
 
     def quit(game, list_of_words, number_of_parameters):
         """

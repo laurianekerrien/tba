@@ -8,6 +8,7 @@ class Player():
         self.inventory = []
         self.current_room = None
         self.history=[]
+        self.cards = []
 
     def stay(self):
         print(self.current_room.get_long_description())
@@ -16,6 +17,57 @@ class Player():
         """Ajoute la pièce actuelle à l'historique si ce n'est pas la dernière visitée."""
         if not self.history or self.history[-1] != self.current_room:
             self.history.append(self.current_room)
+
+    def check_inventory(self):
+        """Affiche l'inventaire du joueur."""
+        if self.inventory:
+            print(f"Inventaire de {self.name}:")
+            for item in self.inventory:
+                print(f"- {item}")
+        else:
+            print(f"Inventaire de {self.name} est vide.")
+
+    def look(self):
+        """Affiche la description de la pièce actuelle et les objets présents."""
+        if self.current_room:
+            print(f"Vous êtes dans {self.current_room.name}: {self.current_room.description}")
+            if self.current_room.items:
+                print("Items présents dans cette pièce:")
+                for item in self.current_room.items:
+                    print(f"- {item}")
+            else:
+                print("Il n'y a aucun item dans cette pièce.")
+        else:
+            print("Vous n'êtes dans aucune pièce.")
+
+    def take(self, item_name):
+        """Prend un objet de la pièce actuelle et l'ajoute à l'inventaire."""
+        if self.current_room:
+            for item in self.current_room.items:
+                if item.name.lower() == item_name.lower():
+                    self.inventory.append(item)
+                    self.current_room.items.remove(item)
+                    print(f"Vous avez pris : {item}")
+                    return
+            print(f"L'item '{item_name}' n'est pas dans cette pièce.")
+        else:
+            print("Vous n'êtes dans aucune pièce pour prendre des items.")
+
+    def drop(self, item_name):
+        """Repose un objet de l'inventaire dans la pièce actuelle."""
+        for item in self.inventory:
+            if item.name.lower() == item_name.lower():
+                self.inventory.remove(item)
+                self.current_room.items.append(item)
+                print(f"Vous avez reposé : {item}")
+                return
+        print(f"L'item '{item_name}' n'est pas dans votre inventaire.")
+
+    def show_cards(self):
+        """Affiche les cartes distribuées au joueur."""
+        print("\nVos cartes :")
+        for card in self.cards:
+            print(f"- {card}")
 
             
     # Define the move method.
