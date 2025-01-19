@@ -1,4 +1,4 @@
-from room import Room
+from roomnul import Room
 
 class Item:
     def __init__(self, name, description):

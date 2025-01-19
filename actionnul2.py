@@ -142,11 +142,11 @@ items = [
     Item("Revolver", "Une arme à feu portative."),
     Item("Chandelier", "Un chandelier pouvant servir comme arme."),
     Item("Corde", "Une corde robuste."),
-    Item("Clé_anglaise", "Une clé anglaise lourde et solide."),
-    Item("Poison", "Du poison très efficace."),
-    Item("Livre_ancien", "Un livre avec une couverture poussiéreuse."),
+    Item("Clé anglaise", "Une clé anglaise lourde et solide."),
+    Item("Tuyau de plomb", "Un tuyau de plomb lourd et solide."),
+    Item("Livre ancien", "Un livre avec une couverture poussiéreuse."),
     Item("Tasse", "Une tasse de thé abandonnée."),
-    Item("Ustensile_de_cuisine", "Un ustensile pratique pour cuisiner.")
+    Item("Ustensile de cuisine", "Un ustensile pratique pour cuisiner.")
 ]
 
 def assign_items_to_rooms(rooms):

@@ -2,11 +2,11 @@
 
 # Import modules
 
-from room import Room
-from player import Player
-from command import Command
-from actions import Actions
-from item import Item
+from roomnul import Room
+from playernul import Player
+from commandenul import Command
+from actionnul import Actions
+from itemnul import Item
 import random
 
 # Variable globale pour le débogage

@@ -1,8 +1,8 @@
 # Description: The actions module.
-from room import Room
-from player import Player
-from command import Command
-from item import Item
+from roomnul import Room
+from playernul import Player
+from commandenul import Command
+from itemnul import Item
 import random
 
 # Messages d'erreur.
